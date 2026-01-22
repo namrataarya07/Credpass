@@ -20,6 +20,7 @@
       font-size: 48px;
       margin: 0;
       color: #7CFF6B;
+      letter-spacing: 0.5px;
     }
     .subtitle {
       font-size: 18px;
@@ -27,11 +28,16 @@
       margin-top: 10px;
     }
     .card {
-      margin-top: 30px;
+      margin-top: 26px;
       padding: 24px;
       border-radius: 16px;
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    }
+    h2 {
+      margin: 0 0 12px 0;
+      font-size: 22px;
     }
     button {
       padding: 12px 18px;
@@ -39,13 +45,16 @@
       border-radius: 10px;
       background: #7CFF6B;
       color: black;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       margin-top: 12px;
+      transition: 0.2s;
     }
+    button:hover { transform: translateY(-1px); }
     button:disabled {
       opacity: 0.4;
       cursor: not-allowed;
+      transform: none;
     }
     .grid {
       display: grid;
@@ -59,46 +68,85 @@
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.08);
     }
-    .label { opacity: 0.7; font-size: 14px; }
-    .value { font-size: 22px; margin-top: 6px; font-weight: 700; }
+    .label { opacity: 0.72; font-size: 14px; }
+    .value { font-size: 22px; margin-top: 6px; font-weight: 800; }
     .tier { color: #7CFF6B; }
     .coupon {
-      font-family: monospace;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       padding: 10px 12px;
-      background: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.45);
       border-radius: 10px;
       display: inline-block;
       margin-top: 8px;
+      border: 1px solid rgba(255,255,255,0.12);
     }
+    .status {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    .good { color: #7CFF6B; font-weight: 800; }
+    .warn { color: #ffd56b; font-weight: 800; }
+    .bad { color: #ff6b6b; font-weight: 900; }
     .footer {
       opacity: 0.6;
       margin-top: 30px;
       font-size: 14px;
     }
+    .smallNote {
+      margin-top: 10px;
+      opacity: 0.7;
+      font-size: 13px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(124,255,107,0.12);
+      border: 1px solid rgba(124,255,107,0.35);
+      font-weight: 800;
+      font-size: 13px;
+      margin-top: 8px;
+    }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h1>CredPass</h1>
     <div class="subtitle">On-chain credibility → Rewards today, credit access tomorrow</div>
+    <div class="pill">PayLoad’26 | Track 1: OnChain Rewards (EVM)</div>
 
+    <!-- CARD 1: WALLET CONNECT -->
     <div class="card">
       <h2>1) Connect Wallet</h2>
       <div id="walletText" class="label">Not connected</div>
       <button id="connectBtn">Connect MetaMask</button>
+
+      <div class="smallNote">
+        MetaMask is required only for demo. We store credibility tier on-chain in full version.
+      </div>
     </div>
 
+    <!-- CARD 2: DASHBOARD -->
     <div class="card">
       <h2>2) Credibility Dashboard</h2>
+
       <div class="grid">
         <div class="mini">
           <div class="label">Credibility Score</div>
           <div class="value" id="scoreText">82 / 100</div>
         </div>
+
         <div class="mini">
           <div class="label">Tier</div>
           <div class="value tier" id="tierText">Gold</div>
         </div>
+
         <div class="mini">
           <div class="label">Fraud Risk (Lightweight AI)</div>
           <div class="value" id="fraudText">Low</div>
@@ -106,34 +154,47 @@
       </div>
 
       <button id="writeBtn" disabled>Write Score On-Chain (Demo)</button>
-      <div id="chainStatus" class="label" style="margin-top:10px;"></div>
+      <div id="chainStatus" class="status">Connect wallet to continue.</div>
+
+      <div class="smallNote">
+        *Privacy: No raw transaction data is stored on-chain. Only score + tier + proofHash (future).
+      </div>
     </div>
 
+    <!-- CARD 3: REWARDS -->
     <div class="card">
-      <h2>3) Rewards</h2>
+      <h2>3) Rewards (Tier Locked)</h2>
+      <div class="label">
+        Rewards unlock based on tier: Bronze → Silver → Gold
+      </div>
+
       <div class="grid">
         <div class="mini">
-          <div class="label">Bronze</div>
-          <div class="value">2% off</div>
-          <button onclick="redeem('BRONZE2')">Redeem</button>
+          <div class="label">Bronze Tier Reward</div>
+          <div class="value">2% off (E-commerce)</div>
+          <button onclick="redeem('BRONZE2', 'Bronze')">Redeem</button>
         </div>
+
         <div class="mini">
-          <div class="label">Silver</div>
-          <div class="value">5% off</div>
-          <button onclick="redeem('SILVER5')">Redeem</button>
+          <div class="label">Silver Tier Reward</div>
+          <div class="value">5% off (Food / Lifestyle)</div>
+          <button onclick="redeem('SILVER5', 'Silver')">Redeem</button>
         </div>
+
         <div class="mini">
-          <div class="label">Gold</div>
-          <div class="value">10% off</div>
-          <button onclick="redeem('GOLD10')">Redeem</button>
+          <div class="label">Gold Tier Reward</div>
+          <div class="value">10% off (Travel / Premium)</div>
+          <button onclick="redeem('GOLD10', 'Gold')">Redeem</button>
         </div>
       </div>
 
-      <div id="couponArea" style="margin-top:18px;"></div>
+      <div id="couponArea" class="status" style="margin-top:18px;">
+        Redeem a reward to generate coupon code.
+      </div>
     </div>
 
     <div class="footer">
-      Demo prototype for PayLoad’26 Track 1: OnChain Rewards (Ethereum Track).
+      Demo prototype for PayLoad’26 Track 1: OnChain Rewards (Ethereum / EVM).
     </div>
   </div>
 
@@ -146,24 +207,47 @@
 
     connectBtn.addEventListener("click", async () => {
       if (!window.ethereum) {
-        alert("MetaMask not found! Please install MetaMask.");
+        alert("MetaMask not found! Please install MetaMask extension.");
         return;
       }
-      const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-      const addr = accounts[0];
-      walletText.innerText = "Connected: " + addr;
-      writeBtn.disabled = false;
+      try {
+        const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+        const addr = accounts[0];
+
+        walletText.innerHTML = `<span class="good">Connected:</span> ${addr}`;
+        writeBtn.disabled = false;
+        chainStatus.innerHTML = `<span class="good">✅ Wallet connected.</span> Ready to write score on-chain.`;
+      } catch (err) {
+        alert("Wallet connection failed.");
+      }
     });
 
+    // Demo: write to chain
     writeBtn.addEventListener("click", () => {
-      chainStatus.innerText = "✅ Score written on-chain (demo message).";
+      chainStatus.innerHTML = `<span class="good">✅ Score written on-chain (demo).</span> Transaction will be shown in full version.`;
     });
 
-    function redeem(code) {
+    // Reward redemption locked by tier
+    function redeem(code, rewardTier) {
+      const currentTier = document.getElementById("tierText").innerText.trim();
+
+      const order = { "Bronze": 1, "Silver": 2, "Gold": 3 };
+
+      if (order[currentTier] < order[rewardTier]) {
+        couponArea.innerHTML = `
+          <div class="bad">❌ Not eligible for this reward</div>
+          <div class="label">Your Tier: <b>${currentTier}</b> | Required: <b>${rewardTier}</b></div>
+        `;
+        return;
+      }
+
       couponArea.innerHTML = `
-        <div class="label">Coupon Redeemed</div>
+        <div class="good">✅ Coupon Redeemed</div>
         <div class="coupon">${code}</div>
-        <div class="label" style="margin-top:6px;">(In full version, redemption is stored on-chain.)</div>
+        <div class="label" style="margin-top:6px;">
+          Redemption eligibility verified based on credibility tier.
+        </div>
+        <div class="smallNote">(Full version: redemption will be stored on-chain.)</div>
       `;
     }
   </script>
