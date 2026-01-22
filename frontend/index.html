@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CredPass - Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(120deg, #05060a, #051a2b);
+      color: white;
+      padding: 40px;
+    }
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 48px;
+      margin: 0;
+      color: #7CFF6B;
+    }
+    .subtitle {
+      font-size: 18px;
+      opacity: 0.85;
+      margin-top: 10px;
+    }
+    .card {
+      margin-top: 30px;
+      padding: 24px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+    button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 10px;
+      background: #7CFF6B;
+      color: black;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .mini {
+      padding: 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .label { opacity: 0.7; font-size: 14px; }
+    .value { font-size: 22px; margin-top: 6px; font-weight: 700; }
+    .tier { color: #7CFF6B; }
+    .coupon {
+      font-family: monospace;
+      padding: 10px 12px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 10px;
+      display: inline-block;
+      margin-top: 8px;
+    }
+    .footer {
+      opacity: 0.6;
+      margin-top: 30px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>CredPass</h1>
+    <div class="subtitle">On-chain credibility → Rewards today, credit access tomorrow</div>
+
+    <div class="card">
+      <h2>1) Connect Wallet</h2>
+      <div id="walletText" class="label">Not connected</div>
+      <button id="connectBtn">Connect MetaMask</button>
+    </div>
+
+    <div class="card">
+      <h2>2) Credibility Dashboard</h2>
+      <div class="grid">
+        <div class="mini">
+          <div class="label">Credibility Score</div>
+          <div class="value" id="scoreText">82 / 100</div>
+        </div>
+        <div class="mini">
+          <div class="label">Tier</div>
+          <div class="value tier" id="tierText">Gold</div>
+        </div>
+        <div class="mini">
+          <div class="label">Fraud Risk (Lightweight AI)</div>
+          <div class="value" id="fraudText">Low</div>
+        </div>
+      </div>
+
+      <button id="writeBtn" disabled>Write Score On-Chain (Demo)</button>
+      <div id="chainStatus" class="label" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="card">
+      <h2>3) Rewards</h2>
+      <div class="grid">
+        <div class="mini">
+          <div class="label">Bronze</div>
+          <div class="value">2% off</div>
+          <button onclick="redeem('BRONZE2')">Redeem</button>
+        </div>
+        <div class="mini">
+          <div class="label">Silver</div>
+          <div class="value">5% off</div>
+          <button onclick="redeem('SILVER5')">Redeem</button>
+        </div>
+        <div class="mini">
+          <div class="label">Gold</div>
+          <div class="value">10% off</div>
+          <button onclick="redeem('GOLD10')">Redeem</button>
+        </div>
+      </div>
+
+      <div id="couponArea" style="margin-top:18px;"></div>
+    </div>
+
+    <div class="footer">
+      Demo prototype for PayLoad’26 Track 1: OnChain Rewards (Ethereum Track).
+    </div>
+  </div>
+
+  <script>
+    const connectBtn = document.getElementById("connectBtn");
+    const walletText = document.getElementById("walletText");
+    const writeBtn = document.getElementById("writeBtn");
+    const chainStatus = document.getElementById("chainStatus");
+    const couponArea = document.getElementById("couponArea");
+
+    connectBtn.addEventListener("click", async () => {
+      if (!window.ethereum) {
+        alert("MetaMask not found! Please install MetaMask.");
+        return;
+      }
+      const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+      const addr = accounts[0];
+      walletText.innerText = "Connected: " + addr;
+      writeBtn.disabled = false;
+    });
+
+    writeBtn.addEventListener("click", () => {
+      chainStatus.innerText = "✅ Score written on-chain (demo message).";
+    });
+
+    function redeem(code) {
+      couponArea.innerHTML = `
+        <div class="label">Coupon Redeemed</div>
+        <div class="coupon">${code}</div>
+        <div class="label" style="margin-top:6px;">(In full version, redemption is stored on-chain.)</div>
+      `;
+    }
+  </script>
+</body>
+</html>
