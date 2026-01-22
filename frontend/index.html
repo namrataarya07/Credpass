@@ -18,8 +18,11 @@
       color: #7CFF6B; letter-spacing: 0.5px;
     }
     .subtitle { font-size: 18px; opacity: 0.85; margin-top: 10px; }
+
     .pill {
-      display: inline-block;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
       padding: 6px 10px;
       border-radius: 999px;
       background: rgba(124,255,107,0.12);
@@ -28,30 +31,65 @@
       font-size: 13px;
       margin-top: 10px;
     }
+
+    .topbar {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .linkBtn {
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: white;
+      font-weight: 900;
+      padding: 10px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: 0.2s;
+    }
+    .linkBtn:hover { transform: translateY(-1px); background: rgba(255,255,255,0.16); }
+
     .card {
-      margin-top: 26px;
+      margin-top: 22px;
       padding: 24px;
       border-radius: 16px;
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.10);
       box-shadow: 0 10px 40px rgba(0,0,0,0.25);
     }
+
     h2 { margin: 0 0 12px 0; font-size: 22px; }
+
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 16px;
       margin-top: 18px;
     }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
     .mini {
       padding: 18px;
       border-radius: 14px;
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.08);
     }
+
     .label { opacity: 0.72; font-size: 14px; }
     .value { font-size: 22px; margin-top: 6px; font-weight: 800; }
     .tier { color: #7CFF6B; }
+
     .smallNote { margin-top: 10px; opacity: 0.7; font-size: 13px; }
 
     .btnRow { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
@@ -84,10 +122,27 @@
       border: 1px solid rgba(255,255,255,0.12);
       font-size: 14px;
       opacity: 0.92;
+      line-height: 1.4;
     }
     .good { color: #7CFF6B; font-weight: 900; }
     .warn { color: #ffd56b; font-weight: 900; }
     .bad { color: #ff6b6b; font-weight: 900; }
+
+    .divider {
+      height: 1px;
+      background: rgba(255,255,255,0.10);
+      margin: 14px 0;
+    }
+
+    .breakdownRow {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      opacity: 0.9;
+      padding: 8px 0;
+      border-bottom: 1px dashed rgba(255,255,255,0.10);
+    }
+    .breakdownRow:last-child { border-bottom: none; }
 
     .coupon {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -98,7 +153,15 @@
       margin-top: 8px;
       border: 1px solid rgba(255,255,255,0.12);
     }
+
     .footer { opacity: 0.6; margin-top: 30px; font-size: 14px; }
+    code {
+      background: rgba(255,255,255,0.08);
+      padding: 2px 6px;
+      border-radius: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+      font-size: 13px;
+    }
   </style>
 </head>
 
@@ -106,7 +169,15 @@
   <div class="container">
     <h1>CredPass</h1>
     <div class="subtitle">On-chain credibility → Rewards today, credit access tomorrow</div>
-    <div class="pill">PayLoad’26 | Track 1: OnChain Rewards (Ethereum / EVM)</div>
+
+    <div class="topbar">
+      <div class="pill">PayLoad’26 | Track 1: OnChain Rewards (Ethereum / EVM)</div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <!-- Update later with real links -->
+        <a class="linkBtn" href="https://github.com/namrataarya07/Credpass" target="_blank">GitHub Repo ↗</a>
+        <a class="linkBtn" href="https://namrataarya07.github.io/Credpass/" target="_blank">Live Demo ↗</a>
+      </div>
+    </div>
 
     <!-- CARD 1: WALLET CONNECT -->
     <div class="card">
@@ -148,11 +219,51 @@
         </div>
       </div>
 
-      <button id="writeBtn" disabled>Write Score On-Chain (Demo)</button>
+      <div class="btnRow">
+        <button id="writeBtn" disabled>Write Score On-Chain (Demo)</button>
+      </div>
+
       <div id="chainStatus" class="status">Connect wallet / Demo mode to continue.</div>
 
+      <!-- NEW: Score Breakdown + AI Explanation -->
+      <div class="grid2">
+        <div class="mini">
+          <div class="label"><b>Score Breakdown (Aggregation Logic)</b></div>
+          <div class="divider"></div>
+
+          <div class="breakdownRow"><span>Payment Consistency</span><span id="b1">+30</span></div>
+          <div class="breakdownRow"><span>Spending Stability</span><span id="b2">+20</span></div>
+          <div class="breakdownRow"><span>Savings Habit</span><span id="b3">+15</span></div>
+          <div class="breakdownRow"><span>Reputation (Peer Attestations)</span><span id="b4">+20</span></div>
+          <div class="breakdownRow"><span>Fraud Risk Penalty</span><span id="b5" class="warn">-3</span></div>
+
+          <div class="divider"></div>
+          <div class="label">
+            Final Score stored on-chain (in full version): <b>82 / 100</b>
+          </div>
+        </div>
+
+        <div class="mini">
+          <div class="label"><b>Lightweight AI Fraud-Risk Logic</b></div>
+          <div class="divider"></div>
+          <div class="label">
+            Fraud risk is estimated using anomaly patterns such as:
+          </div>
+          <ul class="label" style="margin-top:10px; padding-left:18px;">
+            <li>Sudden high-value transfers</li>
+            <li>Too many transactions in short time</li>
+            <li>Many new recipients in one day</li>
+            <li>Unusual time/amount spikes</li>
+          </ul>
+          <div class="divider"></div>
+          <div class="label">
+            Output: <b>Low / Medium / High</b> → impacts final credibility score.
+          </div>
+        </div>
+      </div>
+
       <div class="smallNote">
-        *In full version, score is computed from multi-signal trust metrics + anomaly scoring and verified on-chain.
+        *In full version, score is computed off-chain (aggregation engine), and only verified score + tier + proofHash is stored on-chain.
       </div>
     </div>
 
@@ -186,8 +297,43 @@
       </div>
     </div>
 
+    <!-- NEW: Blockchain Proof Card -->
+    <div class="card">
+      <h2>4) Blockchain Proof & Verifiability</h2>
+      <div class="label">
+        CredPass stores a tamper-proof credibility record on an Ethereum-compatible chain (EVM).
+      </div>
+
+      <div class="grid2">
+        <div class="mini">
+          <div class="label"><b>What is stored on-chain?</b></div>
+          <div class="divider"></div>
+          <ul class="label" style="margin-top:8px; padding-left:18px;">
+            <li>Credibility Score (0–100)</li>
+            <li>Tier: Bronze / Silver / Gold</li>
+            <li><b>proofHash</b> (hash of off-chain score proof)</li>
+            <li>Reward redemption log</li>
+          </ul>
+        </div>
+
+        <div class="mini">
+          <div class="label"><b>Smart Contract</b></div>
+          <div class="divider"></div>
+          <div class="label">
+            Contract File: <code>smart-contract/CredPass.sol</code>
+          </div>
+          <div class="smallNote">
+            In full version, partners/banks can verify:
+            <br/>✅ score authenticity
+            <br/>✅ redemption validity
+            <br/>✅ no manual tampering
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="footer">
-      Prototype built for PayLoad’26. CredPass demonstrates an on-chain credibility + rewards redemption flow.
+      Prototype built for PayLoad’26. CredPass demonstrates on-chain credibility + rewards redemption + fraud safety scoring.
     </div>
   </div>
 
